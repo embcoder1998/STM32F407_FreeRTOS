@@ -1,0 +1,6 @@
+../Core/Src/FREE_RTOS_application.c:43:6:callingTaskCreation	40	static,ignoring_inline_asm
+../Core/Src/FREE_RTOS_application.c:112:6:userTaskOne	32	static,ignoring_inline_asm
+../Core/Src/FREE_RTOS_application.c:142:6:userTaskTwo	32	static,ignoring_inline_asm
+../Core/Src/FREE_RTOS_application.c:173:6:userTaskThree	32	static,ignoring_inline_asm
+../Core/Src/FREE_RTOS_application.c:205:6:userTaskFour	32	static,ignoring_inline_asm
+../Core/Src/FREE_RTOS_application.c:235:6:vApplicationIdleHook	8	static

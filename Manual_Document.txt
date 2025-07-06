@@ -1,0 +1,260 @@
+
+This is the manual document what wver i understand i mentioned here as a proper documentation
+
+
+1---------Memory Understanding -----------------------------------------------------------------------------------------------
+
+1.1 Flash memeory is only reading mode
+1.2 CCM coupled memory is the reading and writing mode
+1.3 RAM is writing and reading mode
+1.4 Example   CCMRAM    (xrw)    : ORIGIN = 0x10000000,   LENGTH = 64K
+              RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 128K
+              FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 1024K
+    Note- this address mentioned in the data sheet of this microcontroller
+    
+1.5 Text section = text section created by the flash memory to store the data because its not volatile memory
+1.6 ISR vectore define in the FLASH type of memory section its predefined memory for interuppt from vendor of the microcontroller
+1.7 array ,constant data and string memory created in flash memory that is rodata section
+1.8 stack and heap part of the RAM section that will take the data from the flash memory while at intilize time .
+1.9 data section is the part of the RAM , inside the data section .bss section is there.
+1.10 .bss section used for the those variable at defined its mean int i =0;
+1.11 CCRAM is alos one type of the RAM its SRAM that is more faster than the RAM so most of the data processing in the CCRAM like global
+     array and constant string , extern variable , and other use for the data
+     
+1.12 Excuing order of the memory by process
+     RAM
+     RAM ---> Flash
+     CCRAM ----> Flash
+     CCRAM ----> RAM
+  Note - this all memory connected to the processor bus that will take care the processor
+
+    
+1----------------------Memory understand end------------------------------------------------------------------------
+
+
+
+2-------------------Execuation Process of Processor------------------------------------------------------------------------
+
+2.1 start address for the initialization values of the .data section. start address -----> end address
+2.2 start the address for the intilization value of the .bss section . start address -----> end address
+2.3 Set the initial SP
+2.4 Set the initial PC == Reset_Handler,
+2.5 system Intilization --->Call the clock system initialization function
+2.6 Copy the data segment initializers from flash to SRAM 
+2.7 intilize the bss segment
+2.8 call the application entry point
+
+2------------------Excuation Process of Processor END----------------------------------------------
+
+
+3------------------Processor Basic Understanding ------------------------------------------------------------------------
+
+3.1 Symentic Core 
+3.1.1 all core have same configuration its same core 
+3.1.2 each core have same main memery they can access input and output devices
+3.1.3 each core have their own cache memory
+3.1.4 they distribute the task very efficient manner way 
+
+3.2 Asymentic Core
+3.2.1 all core have different configuration but one core is the master
+3.2.2 master handling system level operation like interrupt handling , sheduling process and managing IO
+3.2.1 other processor focus on math graphic and signal processing
+
+| Feature          | **AMP**                        | **SMP**                                                                                |
+| ---------------- | ------------------------------ | -------------------------------------------------------------------------------------- |
+| Processor roles  | Master–Slave, not equal        | All processors are identical and equal ([geeksforgeeks.org][1], [en.wikipedia.org][2]) |
+| OS handling      | Only master runs OS tasks      | All run OS and user tasks equally                                                      |
+| Scheduling style | Master assigns tasks           | OS scheduler balances across all cores                                                 |
+| Complexity       | Simpler OS logic               | More complex cache coherence, scheduling                                               |
+| Scalability      | Limited (master is bottleneck) | Better, though also has coherence limits                                               |
+| Cost and Power   | Lower                          | Higher                                                                                 |
+
+3.3 CPU Resources -> when we are discussing about the CPU resources the first we need to fcous on time and space .
+3.4 CPU configuration
+3.4.1 purly configurable configuration its means its one time configure while when system is started . most of thing consider as hardware lavel 
+     like auto reload timer registor DRAM refresh ,and etc
+3.4.2 Programmable Peripheral its means that user can configure and its calling multiple time like UART and Timer
+3.5 MCU -- address decoding logic
+3.6 MPU -- it will check the excess violation of mmemory . this device mostly used in the small appliation like embedded real time 
+3.7 MMU -- it will use for the checking all charastic , translation the virtual address to physical address and also used for the excess vilation
+           this MMU used in large type of application like laptop phone and etc.
+
+3----------------------------Processor basic understading END---------------------------------------------------------------------
+
+4----------------------------customization RTOS defined-------------------------------------------------------------------------
+#ifndef FREERTOS_CONFIG_H
+#define FREERTOS_CONFIG_H
+
+/* Here is a good place to include header files that are required across
+   your application. */
+#include "something.h"
+
+#define [configUSE_PREEMPTION](#configuse_preemption)                                                           1
+#define [configUSE_PORT_OPTIMISED_TASK_SELECTION](#configuse_port_optimised_task_selection)                     0
+#define [configUSE_TICKLESS_IDLE](#configuse_tickless_idle)                                                     0
+#define [configCPU_CLOCK_HZ](#configcpu_clock_hz)                                                               60000000
+#define [configSYSTICK_CLOCK_HZ](#configsystick_clock_hz)                                                       1000000
+#define [configTICK_RATE_HZ](#configtick_rate_hz)                                                               250
+#define [configMAX_PRIORITIES](#configmax_priorities)                                                           5
+#define [configMINIMAL_STACK_SIZE](#configminimal_stack_size)                                                  128
+#define [configMAX_TASK_NAME_LEN](#configmax_task_name_len)                                                    16
+#define [configUSE_16_BIT_TICKS](#configuse_16_bit_ticks)                                                      0
+#define [configIDLE_SHOULD_YIELD](#configidle_should_yield)                                                    1
+#define [configUSE_TASK_NOTIFICATIONS](#configuse_task_notifications)                                          1
+#define [configTASK_NOTIFICATION_ARRAY_ENTRIES](#configtask_notification_array_entries)                        3
+#define [configUSE_MUTEXES](#configuse_mutexes)                                                                0
+#define [configUSE_RECURSIVE_MUTEXES](#configuse_recursive_mutexes)                                            0
+#define [configUSE_COUNTING_SEMAPHORES](#configuse_counting_semaphores)                                        0
+#define [configUSE_ALTERNATIVE_API](#configuse_alternative_api)                                                0 /* Deprecated! */
+#define [configQUEUE_REGISTRY_SIZE](#configqueue_registry_size)                                                10
+#define [configUSE_QUEUE_SETS](#configuse_queue_sets)                                                          0
+#define [configUSE_TIME_SLICING](#configuse_time_slicing)                                                      0
+#define [configUSE_NEWLIB_REENTRANT](#configuse_newlib_reentrant)                                              0
+#define [configENABLE_BACKWARD_COMPATIBILITY](#configenable_backward_compatibility)                            0
+#define [configNUM_THREAD_LOCAL_STORAGE_POINTERS](#confignum_thread_local_storage_pointers)                     5
+#define [configUSE_MINI_LIST_ITEM](#configuse_mini_list_item)                                                   1
+#define [configSTACK_DEPTH_TYPE](#configstack_depth_type)                                                     uint16_t
+#define [configMESSAGE_BUFFER_LENGTH_TYPE](#configmessage_buffer_length_type)                                 size_t
+#define [configHEAP_CLEAR_MEMORY_ON_FREE](#configheap_clear_memory_on_free)                                   1
+
+/* Memory allocation related definitions. */
+#define [configSUPPORT_STATIC_ALLOCATION](#configsupport_static_allocation)                                   1
+#define [configSUPPORT_DYNAMIC_ALLOCATION](#configsupport_dynamic_allocation)                                 1
+#define [configTOTAL_HEAP_SIZE](#configtotal_heap_size)                                                       10240
+#define [configAPPLICATION_ALLOCATED_HEAP](#configapplication_allocated_heap)                            1
+#define [configSTACK_ALLOCATION_FROM_SEPARATE_HEAP](#configstack_allocation_from_separate_heap)                   1
+
+/* Hook function related definitions. */
+#define [configUSE_IDLE_HOOK](#configuse_idle_hook)                                 0
+#define [configUSE_TICK_HOOK](#configuse_tick_hook)                                 0
+#define [configCHECK_FOR_STACK_OVERFLOW](#configcheck_for_stack_overflow)                      0
+#define [configUSE_MALLOC_FAILED_HOOK](#configuse_malloc_failed_hook)                        0
+#define [configUSE_DAEMON_TASK_STARTUP_HOOK](#configuse_daemon_task_startup_hook)                  0
+#define [configUSE_SB_COMPLETED_CALLBACK](#configuse_sb_completed_callback)                     0
+
+/* Run time and task stats gathering related definitions. */
+#define [configGENERATE_RUN_TIME_STATS](#configgenerate_run_time_stats)                       0
+#define [configUSE_TRACE_FACILITY](#configuse_trace_facility)                            0
+#define [configUSE_STATS_FORMATTING_FUNCTIONS](#configuse_stats_formatting_functions)                0
+
+/* Co-routine related definitions. */
+#define [configUSE_CO_ROUTINES](#configuse_co_routines)                               0
+#define [configMAX_CO_ROUTINE_PRIORITIES](#configmax_co_routine_priorities)                     1
+
+/* Software timer related definitions. */
+#define [configUSE_TIMERS](#configuse_timers)                                    1
+#define [configTIMER_TASK_PRIORITY](#configtimer_task_priority)                           3
+#define [configTIMER_QUEUE_LENGTH](#configtimer_queue_length)                            10
+#define [configTIMER_TASK_STACK_DEPTH](#configtimer_task_stack_depth)                        configMINIMAL_STACK_SIZE
+
+/* Interrupt nesting behaviour configuration. */
+#define [configKERNEL_INTERRUPT_PRIORITY](#kernel_priority)         [dependent of processor]
+#define [configMAX_SYSCALL_INTERRUPT_PRIORITY](#kernel_priority)    [dependent on processor and application]
+#define [configMAX_API_CALL_INTERRUPT_PRIORITY](#kernel_priority)   [dependent on processor and application]
+
+/* Define to trap errors during development. */
+#define [configASSERT](#configassert)( ( x ) ) if( ( x ) == 0 ) vAssertCalled( __FILE__, __LINE__ )
+
+/* FreeRTOS MPU specific definitions. */
+#define [configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS](#configinclude_application_defined_privileged_functions) 0
+#define [configTOTAL_MPU_REGIONS](#configtotal_mpu_regions)                                8 /* Default value */
+#define [configTEX_S_C_B_FLASH](#configtex_s_c_b_flash)                                  0x07UL /* Default value */
+#define [configTEX_S_C_B_SRAM](#configtex_s_c_b_sram)                                   0x07UL /* Default value */
+#define [configENFORCE_SYSTEM_CALLS_FROM_KERNEL_ONLY](#configenforce_system_calls_from_kernel_only)            1
+#define [configALLOW_UNPRIVILEGED_CRITICAL_SECTIONS](#configallow_unprivileged_critical_sections)             1
+#define [configENABLE_ERRATA_837070_WORKAROUND](#configenable_errata_837070_workaround)                  1
+
+/* ARMv8-M port specific configuration definitions. */
+#define [configENABLE_TRUSTZONE](#configenable_trustzone)                            1
+#define [configRUN_FREERTOS_SECURE_ONLY](#configrun_freertos_secure_only)            1
+#define [configENABLE_MPU](#configenable_mpu)                                        1
+#define [configENABLE_FPU](#configenable_fpu)                                        1
+#define [configENABLE_MVE](#configenable_mve)                                        1
+
+/* ARMv8-M secure side port related definitions. */
+#define [secureconfigMAX_SECURE_CONTEXTS](#secureconfigMAX_SECURE_CONTEXTS)         5
+
+/* Optional functions - most linkers will remove unused functions anyway. */
+#define [INCLUDE_vTaskPrioritySet](#include_parameters)                1
+#define [INCLUDE_uxTaskPriorityGet](#include_parameters)               1
+#define [INCLUDE_vTaskDelete](#include_parameters)                     1
+#define [INCLUDE_vTaskSuspend](#include_parameters)                    1
+#define [INCLUDE_vTaskDelayUntil](#include_parameters)                 1
+#define [INCLUDE_vTaskDelay](#include_parameters)                      1
+#define [INCLUDE_xTaskGetSchedulerState](#include_parameters)          1
+#define [INCLUDE_xTaskGetCurrentTaskHandle](#include_parameters)       1
+#define [INCLUDE_uxTaskGetStackHighWaterMark](#include_parameters)     0
+#define [INCLUDE_uxTaskGetStackHighWaterMark2](#include_parameters)    0
+#define [INCLUDE_xTaskGetIdleTaskHandle](#include_parameters)          0
+#define [INCLUDE_eTaskGetState](#include_parameters)                   0
+#define [INCLUDE_xTimerPendFunctionCall](#include_parameters)          0
+#define [INCLUDE_xTaskAbortDelay](#include_parameters)                 0
+#define [INCLUDE_xTaskGetHandle](#include_parameters)                  0
+#define [INCLUDE_xTaskResumeFromISR](#include_parameters)              1
+
+/* A header file that defines trace macro can be included here. */
+
+#endif /* FREERTOS_CONFIG_H */
+
+4----------------------------customization RTOS defined END-------------------------------------------------------------------------
+
+
+
+5----------------------------Documentation of the free RTOS--------------------------------------------------------------
+5.1 focus on the most important point on the FreeRTOS
+5.2 what base we selected the heap there is the 4 heap source file base on the application we selected the source file 
+5.3 Heap1.c
+5.3.1 you can allocate the memory but you can not delete the memory .
+5.3.2 if you try to delete the memory its should be act as a leak memory 
+5.3.3 you can create the task if you delete the task memory can not be free and again you cant relocate the same memory
+5.3.4 its fast and deterministic 
+5.3.5 its used for the small application
+
+5.4 Heap2.c
+5.4.1 we can allocate the memory and deleted the memory also can able to crete and delete task as run time
+5.4.2 its work as linked list but free block cant be merged 
+5.4.3 very light weigh and small application can be used
+5.4.4 its can overweight the memory means generally we are facing the fragmentation issue
+
+5.5 Heap3.c
+5.5.1  you can direclty used for the malloc and free function.
+5.5.2 its not suitable for the hard real time application and its not deterministic , 
+5.5.3 this is use for the debugging purpose application like pc simulation , debugging , testing
+
+5.6 Heap4.c 
+5.6.1 can able to create and delete the task 
+5.6.2 you can create the memory and use the over time memory fragmention 
+5.6.3 very good manage on the memory fragmentation
+5.6.4 this is use the real and hard embedded system and very large memory dynamic allocation
+ 
+5.7 Heap.c
+5.7.1 used for the multiiple memory region
+5.7.2 very complex memeory managment algorithm 
+5.7.3 mostly external ram used 
+
+5----------------------------------End of the heap description for the heap memory------------------------
+
+6---------------------------How to link the SEGGER RRTT viewer in stm32 board -------------------------------------------
+6.1 first download the STLINKReflash.exe file
+    Note- this file is availabe for the windows and linux os not for the macos
+6.2 Download from this link - https://www.segger.com/products/debug-probes/j-link/models/other-j-links/st-link-on-board/
+6.3 then run the exe file and update the firmware of the jlink , its process to converted to stlink to jlink debugger in evaluation board
+6.4 the download the code from this link RTT code -- https://github.com/SEGGERMicro/RTT
+6.5 here the instruction of what are the file we need to copy
+6.7       github file                             mysource code 
+    copy  config folder                           core/config
+    --------------------------------------------------------------------
+    copy SEGGER_RTT.h                             core/inc/SEGGER_RTT.h
+    -----------------------------------------------------------------------------
+    copy SEGGER_RTT_printf.c
+         SEGGER_RTT_Syscalls_GCC.c
+         SEGGER_RTT.c                              core/SEGGER_RTT/
+    ---------------------------------------------------------------------------
+    Note this much file we need to take 
+    
+6.8 include the main file #include "SEGGER_RTT_Conf.h and #include "SEGGER_RTT.h  
+6.9 intilize the before the main --SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
+6.9 use the SEGGER_RTT_Printf() call in while loop
+6.10 run the SEGGER_RTT_Viewer.exe and select the hardware target.
+6.11 if you are not getting any thing please follow the youtube link -https://www.youtube.com/watch?v=Rf-NKOoPYUc
+

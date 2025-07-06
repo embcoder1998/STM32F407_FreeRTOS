@@ -1,0 +1,12 @@
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_gpio.h:939:22:LL_GPIO_TogglePin	24	static
+../Core/Src/led_application.c:37:6:orangeLed	8	static
+../Core/Src/led_application.c:48:6:orangeLedToggling	8	static
+../Core/Src/led_application.c:54:6:greenLed	8	static
+../Core/Src/led_application.c:66:6:redLed	8	static
+../Core/Src/led_application.c:78:6:blueLed	8	static
+../Core/Src/led_application.c:91:6:orangeLedSetBlinkTime	16	static
+../Core/Src/led_application.c:105:6:greenLedSetBlinkTime	16	static
+../Core/Src/led_application.c:117:6:redLedSetBlinkTime	16	static
+../Core/Src/led_application.c:129:6:blueLedSetBlinkTime	16	static

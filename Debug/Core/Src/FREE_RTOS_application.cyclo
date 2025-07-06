@@ -1,0 +1,6 @@
+../Core/Src/FREE_RTOS_application.c:43:6:callingTaskCreation	5
+../Core/Src/FREE_RTOS_application.c:112:6:userTaskOne	2
+../Core/Src/FREE_RTOS_application.c:142:6:userTaskTwo	2
+../Core/Src/FREE_RTOS_application.c:173:6:userTaskThree	2
+../Core/Src/FREE_RTOS_application.c:205:6:userTaskFour	2
+../Core/Src/FREE_RTOS_application.c:235:6:vApplicationIdleHook	1

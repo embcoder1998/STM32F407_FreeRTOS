@@ -25,4 +25,13 @@ actually i used the STM32f407 discovery board its supporting the default STLINK 
    ![image](https://github.com/user-attachments/assets/0fea7d57-2a02-495a-a043-6cf2780d855b)
 
    ![image](https://github.com/user-attachments/assets/5e8d6796-b634-4158-b383-3c158d63093d)
+   
    please select the Accept
+
+1.4 first build the firmware and then download the .elf file
+1.5 opend the RTTLinkviewer.exe file 
+<img width="340" height="418" alt="image" src="https://github.com/user-attachments/assets/ba453fb1-caa8-4563-b076-cae91c486286" />
+
+1.6 choose the correct hardware like I am using the STM32F407VGTX
+1.7 then press on OKK button
+

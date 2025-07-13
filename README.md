@@ -35,3 +35,11 @@ actually i used the STM32f407 discovery board its supporting the default STLINK 
 1.6 choose the correct hardware like I am using the STM32F407VGTX
 1.7 then press on OKK button
 
+1.8 then this window will open and please press the accept button
+<img width="632" height="323" alt="image" src="https://github.com/user-attachments/assets/d9d53a96-2f34-4d11-a3d5-92cb165e704c" />
+
+you can see the data on the console
+<img width="1779" height="1076" alt="image" src="https://github.com/user-attachments/assets/7b1224e2-1c05-4450-a14f-241e38bff87d" />
+
+
+
